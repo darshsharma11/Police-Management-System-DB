@@ -1,18 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import mysql.connector
 from datetime import date, datetime
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "supersecretkey")
 
 # ---------------------- DATABASE CONNECTION ----------------------
 def get_connection():
-    # NOTE: adjust credentials if different on your machine
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="darsh",
-        database="police",
+        host=os.environ.get("DB_HOST", "localhost"),
+        user=os.environ.get("DB_USER", "root"),
+        password=os.environ.get("DB_PASSWORD", "darsh"),
+        database=os.environ.get("DB_NAME", "police"),
         buffered=True
     )
 
